@@ -71,13 +71,3 @@ std::string HashTable::get(const std::string& key) {
     return "";
 }
 
-std::pair<std::string, std::string>* HashTable::get_all(int& count) {
-    std::pair<std::string, std::string>* all_entries = new std::pair<std::string, std::string>[this->count]();
-    count = 0;
-    for (int i = 0; i < size; ++i) {
-        if (!data[i].deleted) {
-            all_entries[count++] = std::make_pair(data[i].key, data[i].value);
-        }
-    }
-    return all_entries;
-}
