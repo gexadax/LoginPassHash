@@ -6,7 +6,7 @@ const int MAX_LOAD_FACTOR = 2;
 HashTable::HashTable(int size) : size(size), count(0) {
     data = new Slot[size];
     for (int i = 0; i < size; ++i) {
-        data[i].deleted = true;
+        data[i].isEmpty = true;
     }
 }
 
@@ -34,10 +34,10 @@ bool HashTable::insert(const std::string& key, const std::string& value) {
     int h = hash(key);
     for (int i = 0; i < size; ++i) {
         int j = (h + i * i) % size;
-        if (data[j].deleted || data[j].key == key) {
+        if (data[j].isEmpty || data[j].key == key) {
             data[j].key = key;
             data[j].value = value;
-            data[j].deleted = false;
+            data[j].isEmpty = false;
             ++count;
             return true;
         }
@@ -51,8 +51,8 @@ bool HashTable::remove(const std::string& key) {
     int h = hash(key);
     for (int i = 0; i < size; ++i) {
         int j = (h + i * i) % size;
-        if (!data[j].deleted && data[j].key == key) {
-            data[j].deleted = true;
+        if (!data[j].isEmpty && data[j].key == key) {
+            data[j].isEmpty = true;
             --count;
             return true;
         }
@@ -64,7 +64,7 @@ std::string HashTable::get(const std::string& key) {
     int h = hash(key);
     for (int i = 0; i < size; ++i) {
         int j = (h + i * i) % size;
-        if (!data[j].deleted && data[j].key == key) {
+        if (!data[j].isEmpty && data[j].key == key) {
             return data[j].value;
         }
     }
@@ -75,7 +75,7 @@ std::pair<std::string, std::string>* HashTable::get_all(int& count) {
     std::pair<std::string, std::string>* all_entries = new std::pair<std::string, std::string>[this->count]();
     count = 0;
     for (int i = 0; i < size; ++i) {
-        if (!data[i].deleted) {
+        if (!data[i].isEmpty) {
             all_entries[count++] = std::make_pair(data[i].key, data[i].value);
         }
     }

@@ -15,7 +15,7 @@ private:
 	struct Slot {
 		std::string key;
 		std::string value;
-		bool deleted;
+		bool isEmpty;
 	};
 
 	int size;
